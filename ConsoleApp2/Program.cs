@@ -36,6 +36,7 @@ namespace ConsoleApp2
 			_client.Log += LogAsync;
 			_client.Ready += ReadyAsync;
 			_client.MessageReceived += MessageReceivedAsync;
+			_client.MessageUpdated += MessageUpdatedAsync;
 		}
 
 		public async Task MainAsync()
@@ -63,6 +64,17 @@ namespace ConsoleApp2
 			return Task.CompletedTask;
 		}
 
+		private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
+		{
+			//if (arg1.Value.EditedTimestamp != null) {
+			
+
+				await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen "+ history[arg2.Id] + ")");
+
+			//}
+		}
+
+		Dictionary<ulong, string> history = new Dictionary<ulong, string>();
 		// This is not the recommended way to write a bot - consider
 		// reading over the Commands Framework sample.
 		private async Task MessageReceivedAsync(SocketMessage message)
@@ -70,6 +82,16 @@ namespace ConsoleApp2
 			// The bot should never respond to itself.
 			if (message.Author.Id == _client.CurrentUser.Id)
 				return;
+
+			history.Add(message.Id, message.Content);
+
+			if (message.Content.StartsWith("!help")) {
+				await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
+			}
+
+			if (message.Content.StartsWith("!clown")) {
+				await message.Channel.SendMessageAsync("If frisk is the clown wolf does that make me a clown bot? :(");
+			}
 
 			if (message.Content.StartsWith("!calc")) {
 				try {
