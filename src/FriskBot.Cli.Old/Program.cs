@@ -95,11 +95,12 @@ namespace ConsoleApp2
 
 			if (message.Content.StartsWith("!calc")) {
 				try {
-					SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
+					//SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
 					var bla = new Dictionary<string, double>();
 
-					await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
-				} catch(Exception exc) {
+                    //await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
+                    await message.Channel.SendMessageAsync("42");
+                } catch(Exception exc) {
 					await message.Channel.SendMessageAsync("Felis: " + exc.Message);
 				}
 			}

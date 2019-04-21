@@ -206,11 +206,5 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SuperHappyScript\SuperHappyScript.csproj">
-      <Project>{21a3ec1e-9f39-4461-aa51-a26cc0426597}</Project>
-      <Name>SuperHappyScript</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
