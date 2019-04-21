@@ -44,6 +44,7 @@ namespace ConsoleApp2
             // Tokens should be considered secret data, and never hard-coded.
             await _client.LoginAsync(TokenType.Bot, "NTY4NTgzNDIwNDYxMTg3MTAy.XLkOvw.JXeiv_T8OJfmMSJz3H7TiyNvq3g");
             await _client.StartAsync();
+            await _client.SetGameAsync("Sekiro 2: Electric Boogaloo");
 
             // Block the program until it is closed.
             await Task.Delay(-1);
@@ -99,11 +100,10 @@ namespace ConsoleApp2
             {
                 try
                 {
-                    //SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
+                    SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
                     var bla = new Dictionary<string, double>();
 
-                    //await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
-                    await message.Channel.SendMessageAsync("42");
+                    await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
                 }
                 catch (Exception exc)
                 {
