@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 
-namespace ConsoleApp2
+namespace FriskBot.Cli
 {
     // This is a minimal, bare-bones example of using Discord.Net
     //
@@ -42,7 +42,7 @@ namespace ConsoleApp2
         public async Task MainAsync()
         {
             // Tokens should be considered secret data, and never hard-coded.
-            await _client.LoginAsync(TokenType.Bot, "NTY4NTgzNDIwNDYxMTg3MTAy.XLkOvw.JXeiv_T8OJfmMSJz3H7TiyNvq3g");
+            await _client.LoginAsync(TokenType.Bot, "");
             await _client.StartAsync();
             await _client.SetGameAsync("Sekiro 2: Electric Boogaloo");
 

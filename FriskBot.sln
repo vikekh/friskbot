@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{20CA16B3-21D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriskBot.Cli", "src\FriskBot.Cli\FriskBot.Cli.csproj", "{629C314B-BCCF-41FC-9115-87EEBD9A765D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperHappyScript", "src\SuperHappyScript\SuperHappyScript.csproj", "{A6ED74E8-799C-452E-8581-ED8DF10548A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperHappyScript", "src\SuperHappyScript\SuperHappyScript.csproj", "{A6ED74E8-799C-452E-8581-ED8DF10548A6}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9301DF8D-69AC-49D1-918E-F7347B7A97FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,12 @@ Global
 		{A6ED74E8-799C-452E-8581-ED8DF10548A6}.NormalSSO|Any CPU.Build.0 = Release|Any CPU
 		{A6ED74E8-799C-452E-8581-ED8DF10548A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6ED74E8-799C-452E-8581-ED8DF10548A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9301DF8D-69AC-49D1-918E-F7347B7A97FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9301DF8D-69AC-49D1-918E-F7347B7A97FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9301DF8D-69AC-49D1-918E-F7347B7A97FC}.NormalSSO|Any CPU.ActiveCfg = Debug|Any CPU
+		{9301DF8D-69AC-49D1-918E-F7347B7A97FC}.NormalSSO|Any CPU.Build.0 = Debug|Any CPU
+		{9301DF8D-69AC-49D1-918E-F7347B7A97FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9301DF8D-69AC-49D1-918E-F7347B7A97FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
