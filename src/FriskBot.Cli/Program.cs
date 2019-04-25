@@ -67,12 +67,10 @@ namespace FriskBot.Cli
 
         private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
         {
-            //if (arg1.Value.EditedTimestamp != null) {
-
-
-            await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
-
-            //}
+            if (arg1.Value.EditedTimestamp != null) {
+                history[arg2.Id] = arg2.Content;
+                await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
+            }
         }
 
         Dictionary<ulong, string> history = new Dictionary<ulong, string>();
