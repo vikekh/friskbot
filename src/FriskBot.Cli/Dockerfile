@@ -16,4 +16,5 @@ RUN dotnet publish "FriskBot.Cli.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "FriskBot.Cli.dll"]
+ARG TOKEN
+ENTRYPOINT ["dotnet", "FriskBot.Cli.dll", ""]
