@@ -2,9 +2,6 @@
   "profiles": {
     "FriskBot.Cli": {
       "commandName": "Project"
-    },
-    "Docker": {
-      "commandName": "Docker"
     }
   }
 }
