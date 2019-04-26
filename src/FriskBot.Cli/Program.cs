@@ -24,7 +24,7 @@ namespace FriskBot.Cli
         // an asynchronous context from the beginning.
         static void Main(string[] args)
         {
-            new Program().MainAsync().GetAwaiter().GetResult();
+            new Program().MainAsync(args).GetAwaiter().GetResult();
         }
 
         public Program()
@@ -39,10 +39,21 @@ namespace FriskBot.Cli
             _client.MessageUpdated += MessageUpdatedAsync;
         }
 
-        public async Task MainAsync()
+        public async Task MainAsync(string[] args)
         {
+            string token = "";
+
+            try
+            {
+                token = args[0];
+            }
+            catch
+            {
+                throw new ApplicationException($"Auth token is not valid, \"{token}\".");
+            }
+
             // Tokens should be considered secret data, and never hard-coded.
-            await _client.LoginAsync(TokenType.Bot, "");
+            await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
             await _client.SetGameAsync("Sekiro 2: Electric Boogaloo");
 

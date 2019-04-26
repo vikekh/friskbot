@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  friskbot.cli:
-    image: ${DOCKER_REGISTRY-}friskbotcli
-    build:
-      context: .
-      dockerfile: src/FriskBot.Cli/Dockerfile
