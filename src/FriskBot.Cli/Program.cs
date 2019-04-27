@@ -75,7 +75,7 @@ namespace FriskBot.Cli
             await _client.GroupChannels.First().SendMessageAsync("God morgon!");
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
-            return Task.CompletedTask;
+            //return Task.CompletedTask;
         }
 
         private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
