@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Discord;
+using Discord.WebSocket;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
-using Discord;
-using Discord.WebSocket;
 
 namespace FriskBot.Cli
 {
@@ -69,8 +70,9 @@ namespace FriskBot.Cli
 
         // The Ready event indicates that the client has opened a
         // connection and it is now safe to access the cache.
-        private Task ReadyAsync()
+        private async Task ReadyAsync()
         {
+            await _client.GroupChannels.First().SendMessageAsync("God morgon!");
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
             return Task.CompletedTask;
