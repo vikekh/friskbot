@@ -18,8 +18,9 @@ spec:
         io.kompose.service: friskbot-cli
     spec:
       containers:
-      - image: vikekh/friskbot-cli
+      - image: vikekh/friskbot-cli:latest
         name: friskbot-cli
         resources: {}
+      imagePullPolicy: Always
       restartPolicy: Always
 status: {}

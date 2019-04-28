@@ -2,7 +2,7 @@ version: '3'
 
 services:
   friskbot-cli:
-    image: vikekh/friskbot-cli
+    image: vikekh/friskbot-cli:latest
     build:
       context: .
       dockerfile: src/FriskBot.Cli/Dockerfile

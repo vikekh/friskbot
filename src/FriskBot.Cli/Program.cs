@@ -42,11 +42,11 @@ namespace FriskBot.Cli
 
         public async Task MainAsync(string[] args)
         {
-            string token = "";
+            string token = "NTY4NTgzNDIwNDYxMTg3MTAy.XMRZ9A.dXxGsPvzP_t3VCQyJs8GzBZvQJ4";
 
             try
             {
-                token = args[0];
+                //token = args[0];
             }
             catch
             {
@@ -70,12 +70,11 @@ namespace FriskBot.Cli
 
         // The Ready event indicates that the client has opened a
         // connection and it is now safe to access the cache.
-        private async Task ReadyAsync()
+        private Task ReadyAsync()
         {
-            await _client.GroupChannels.First().SendMessageAsync("God morgon!");
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
-            //return Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
@@ -94,6 +93,11 @@ namespace FriskBot.Cli
             // The bot should never respond to itself.
             if (message.Author.Id == _client.CurrentUser.Id)
                 return;
+
+            if (message.Content.StartsWith("!kubernetes"))
+            {
+                await message.Channel.SendMessageAsync("KUBERNETES!");
+            }
 
             history.Add(message.Id, message.Content);
 
