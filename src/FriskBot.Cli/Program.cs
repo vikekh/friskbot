@@ -99,6 +99,11 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("KUBERNETES!");
             }
 
+            if (message.Content.StartsWith("!prag"))
+            {
+                await message.Channel.SendMessageAsync("PRAG!");
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help"))

@@ -21,6 +21,6 @@ spec:
       - image: vikekh/friskbot-cli:latest
         name: friskbot-cli
         resources: {}
-      imagePullPolicy: Always
+        imagePullPolicy: Always
       restartPolicy: Always
 status: {}
