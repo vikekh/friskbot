@@ -43,12 +43,9 @@ namespace FriskBot.Cli
         {
             string token = "";
 
-            try
-            {
+            try {
                 token = args[0];
-            }
-            catch
-            {
+            } catch {
                 throw new ApplicationException($"Auth token is not valid, \"{token}\".");
             }
 
@@ -95,27 +92,27 @@ namespace FriskBot.Cli
 
             history.Add(message.Id, message.Content);
 
-            if (message.Content.StartsWith("!help"))
-            {
-                await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
+            if (message.Content.StartsWith("!help")) {
+                if(message.Content.ToLower() == "!help nilaus") {
+                    await message.Channel.SendMessageAsync("HEY MUFFIN! HELP NILAUS BULLY BUM");
+                } else if(message.Content.Length > 5) {
+                    await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5));
+                } else {
+                    await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
+                }
             }
 
-            if (message.Content.StartsWith("!clown"))
-            {
+            if (message.Content.StartsWith("!clown")) {
                 await message.Channel.SendMessageAsync("If frisk is the clown wolf does that make me a clown bot? :(");
             }
 
-            if (message.Content.StartsWith("!calc"))
-            {
-                try
-                {
+            if (message.Content.StartsWith("!calc")) {
+                try {
                     SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
                     var bla = new Dictionary<string, double>();
 
                     await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
-                }
-                catch (Exception exc)
-                {
+                } catch (Exception exc) {
                     await message.Channel.SendMessageAsync("Felis: " + exc.Message);
                 }
             }
@@ -125,6 +122,20 @@ namespace FriskBot.Cli
 
             if (message.Content == "!vecka")
                 await message.Channel.SendMessageAsync(System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday).ToString());
+
+            if (message.Content == "!datum") {
+                DateTime date = DateTime.Now;
+
+                if(date > new DateTime(date.Year, 10, 1)) {
+                    var days = (date - new DateTime(date.Year, 10, 1)).Days;
+
+                    await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + date.Year);
+                } else {
+                    var days = (date - new DateTime(date.Year - 1, 10, 1)).Days;
+
+                    await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + (date.Year - 1));
+                }
+            }
 
             if (message.Content == "!ping")
                 await message.Channel.SendMessageAsync("pong!");
