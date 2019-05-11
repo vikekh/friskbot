@@ -114,6 +114,11 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("POSTPRAGSUR!");
             }
 
+            if (message.Content.StartsWith("!cicd"))
+            {
+                await message.Channel.SendMessageAsync("CI/CD!");
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help"))
