@@ -109,6 +109,11 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("AZURE!");
             }
 
+            if (message.Content.StartsWith("!post"))
+            {
+                await message.Channel.SendMessageAsync("POSTPRAGSUR!");
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help"))
