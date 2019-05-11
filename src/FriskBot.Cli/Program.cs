@@ -104,6 +104,11 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("PRAG!");
             }
 
+            if (message.Content.StartsWith("!azure"))
+            {
+                await message.Channel.SendMessageAsync("AZURE!");
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help"))
