@@ -119,6 +119,11 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("CI/CD!");
             }
 
+            if (message.Content.StartsWith("!gow"))
+            {
+                await message.Channel.SendMessageAsync("GOD OF WAR!");
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help"))
