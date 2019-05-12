@@ -94,8 +94,12 @@ namespace FriskBot.Cli
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help")) {
-                if(message.Content.ToLower() == "!help nilaus") {
+                if (message.Content.ToLower() == "!help nilaus")
+                {
                     await message.Channel.SendMessageAsync("HEY MUFFIN! HELP NILAUS BULLY BUM");
+                } else if (message.Content.ToLower() == "!help viktor")
+                {
+                    await message.Channel.SendMessageAsync("bög");
                 } else if(message.Content.Length > 5) {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5));
                 } else {
