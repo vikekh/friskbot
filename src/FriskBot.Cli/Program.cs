@@ -129,6 +129,11 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("CURL!");
             }
 
+            if (message.Content.StartsWith("!ugly"))
+            {
+                await message.Channel.SendMessageAsync("UGLY PS SLEEP HACK BC APP SVC IS NOT DESIGNED FOR CONSOLE APPS ON LINUX!");
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help"))
