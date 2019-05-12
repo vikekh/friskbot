@@ -99,7 +99,7 @@ namespace FriskBot.Cli
                     await message.Channel.SendMessageAsync("HEY MUFFIN! HELP NILAUS BULLY BUM");
                 } else if (message.Content.ToLower() == "!help viktor")
                 {
-                    await message.Channel.SendMessageAsync("bög");
+                    await message.Channel.SendMessageAsync("böghög");
                 } else if(message.Content.Length > 5) {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5));
                 } else {
