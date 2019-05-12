@@ -124,6 +124,11 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("GOD OF WAR!");
             }
 
+            if (message.Content.StartsWith("!curl"))
+            {
+                await message.Channel.SendMessageAsync("CURL!");
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help"))
