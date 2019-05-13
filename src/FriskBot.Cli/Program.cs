@@ -94,6 +94,11 @@ namespace FriskBot.Cli
             if (message.Author.Id == _client.CurrentUser.Id)
                 return;
 
+            if (message.Content.StartsWith("!version"))
+            {
+                await message.Channel.SendMessageAsync("v0.1.0!");
+            }
+
             if (message.Content.StartsWith("!kubernetes"))
             {
                 await message.Channel.SendMessageAsync("KUBERNETES!");
