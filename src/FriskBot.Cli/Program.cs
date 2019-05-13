@@ -42,14 +42,11 @@ namespace FriskBot.Cli
 
         public async Task MainAsync(string[] args)
         {
-            string token = "NTY4NTgzNDIwNDYxMTg3MTAy.XMRZ9A.dXxGsPvzP_t3VCQyJs8GzBZvQJ4";
+            string token = "";
 
-            try
-            {
-                //token = args[0];
-            }
-            catch
-            {
+            try {
+                token = args[0];
+            } catch {
                 throw new ApplicationException($"Auth token is not valid, \"{token}\".");
             }
 
@@ -98,70 +95,34 @@ namespace FriskBot.Cli
             {
                 await message.Channel.SendMessageAsync("v0.1.0!");
             }
-
-            if (message.Content.StartsWith("!kubernetes"))
-            {
-                await message.Channel.SendMessageAsync("KUBERNETES!");
-            }
-
-            if (message.Content.StartsWith("!prag"))
-            {
-                await message.Channel.SendMessageAsync("PRAG!");
-            }
-
-            if (message.Content.StartsWith("!azure"))
-            {
-                await message.Channel.SendMessageAsync("AZURE!");
-            }
-
-            if (message.Content.StartsWith("!post"))
-            {
-                await message.Channel.SendMessageAsync("POSTPRAGSUR!");
-            }
-
-            if (message.Content.StartsWith("!cicd"))
-            {
-                await message.Channel.SendMessageAsync("CI/CD!");
-            }
-
-            if (message.Content.StartsWith("!gow"))
-            {
-                await message.Channel.SendMessageAsync("GOD OF WAR!");
-            }
-
-            if (message.Content.StartsWith("!curl"))
-            {
-                await message.Channel.SendMessageAsync("CURL!");
-            }
-
-            if (message.Content.StartsWith("!ugly"))
-            {
-                await message.Channel.SendMessageAsync("UGLY PS SLEEP HACK BC APP SVC IS NOT DESIGNED FOR CONSOLE APPS ON LINUX!");
-            }
-
+          
             history.Add(message.Id, message.Content);
 
-            if (message.Content.StartsWith("!help"))
-            {
-                await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
+            if (message.Content.StartsWith("!help")) {
+                if (message.Content.ToLower() == "!help nilaus")
+                {
+                    await message.Channel.SendMessageAsync("HEY MUFFIN! HELP NILAUS BULLY BUM");
+                } else if (message.Content.ToLower() == "!help viktor")
+                {
+                    await message.Channel.SendMessageAsync("böghög");
+                } else if(message.Content.Length > 5) {
+                    await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5));
+                } else {
+                    await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
+                }
             }
 
-            if (message.Content.StartsWith("!clown"))
-            {
+            if (message.Content.StartsWith("!clown")) {
                 await message.Channel.SendMessageAsync("If frisk is the clown wolf does that make me a clown bot? :(");
             }
 
-            if (message.Content.StartsWith("!calc"))
-            {
-                try
-                {
+            if (message.Content.StartsWith("!calc")) {
+                try {
                     SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
                     var bla = new Dictionary<string, double>();
 
                     await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
-                }
-                catch (Exception exc)
-                {
+                } catch (Exception exc) {
                     await message.Channel.SendMessageAsync("Felis: " + exc.Message);
                 }
             }
@@ -171,6 +132,20 @@ namespace FriskBot.Cli
 
             if (message.Content == "!vecka")
                 await message.Channel.SendMessageAsync(System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday).ToString());
+
+            if (message.Content == "!datum") {
+                DateTime date = DateTime.Now;
+
+                if(date > new DateTime(date.Year, 10, 1)) {
+                    var days = (date - new DateTime(date.Year, 10, 1)).Days;
+
+                    await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + date.Year);
+                } else {
+                    var days = (date - new DateTime(date.Year - 1, 10, 1)).Days;
+
+                    await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + (date.Year - 1));
+                }
+            }
 
             if (message.Content == "!ping")
                 await message.Channel.SendMessageAsync("pong!");
