@@ -67,11 +67,13 @@ namespace FriskBot.Cli
 
         // The Ready event indicates that the client has opened a
         // connection and it is now safe to access the cache.
-        private Task ReadyAsync()
+        private async Task ReadyAsync()
         {
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
-            return Task.CompletedTask;
+            await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync("Hello world!");
+
+            //return Task.CompletedTask;
         }
 
         private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
