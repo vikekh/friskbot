@@ -20,7 +20,7 @@ namespace FriskBot.Cli
     class Program
     {
         private readonly DiscordSocketClient _client;
-        private const string _version = "v0.1.1";
+        private const string _version = "v0.1.2";
 
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
@@ -96,7 +96,7 @@ namespace FriskBot.Cli
 
             if (message.Content.StartsWith("!version"))
             {
-                await message.Channel.SendMessageAsync("v0.1.0!");
+                await message.Channel.SendMessageAsync(_version);
             }
           
             history.Add(message.Id, message.Content);
