@@ -127,7 +127,7 @@ namespace FriskBot.Cli
                 DateTime date = DateTime.Now;
 
                 if(date > new DateTime(date.Year, 10, 1)) {
-                    var days = (date - new DateTime(date.Year, 10, 1)).Days;
+                    var days = (date - new DateTime(date.Year, 10, 1)).Days + 1;
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + date.Year);
                 } else {
