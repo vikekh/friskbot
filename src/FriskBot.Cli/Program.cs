@@ -20,6 +20,7 @@ namespace FriskBot.Cli
     class Program
     {
         private readonly DiscordSocketClient _client;
+        private const string _version = "v0.1.1";
 
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
@@ -71,7 +72,7 @@ namespace FriskBot.Cli
         {
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
-            await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync("Hello world 2!");
+            await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync($"Hello, my name is FriskBot {_version}!");
 
             //return Task.CompletedTask;
         }
