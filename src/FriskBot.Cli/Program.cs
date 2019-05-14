@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Discord;
+using Discord.WebSocket;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
-using Discord;
-using Discord.WebSocket;
 
 namespace FriskBot.Cli
 {
@@ -19,6 +20,7 @@ namespace FriskBot.Cli
     class Program
     {
         private readonly DiscordSocketClient _client;
+        private const string _version = "v0.1.1";
 
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
@@ -66,11 +68,13 @@ namespace FriskBot.Cli
 
         // The Ready event indicates that the client has opened a
         // connection and it is now safe to access the cache.
-        private Task ReadyAsync()
+        private async Task ReadyAsync()
         {
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
-            return Task.CompletedTask;
+            await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync($"Hello, my name is FriskBot {_version}!");
+
+            //return Task.CompletedTask;
         }
 
         private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
@@ -90,11 +94,20 @@ namespace FriskBot.Cli
             if (message.Author.Id == _client.CurrentUser.Id)
                 return;
 
+            if (message.Content.StartsWith("!version"))
+            {
+                await message.Channel.SendMessageAsync("v0.1.0!");
+            }
+          
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help")) {
-                if(message.Content.ToLower() == "!help nilaus") {
+                if (message.Content.ToLower() == "!help nilaus")
+                {
                     await message.Channel.SendMessageAsync("HEY MUFFIN! HELP NILAUS BULLY BUM");
+                } else if (message.Content.ToLower() == "!help viktor")
+                {
+                    await message.Channel.SendMessageAsync("böghög");
                 } else if(message.Content.Length > 5) {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5));
                 } else {
