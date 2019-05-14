@@ -71,7 +71,7 @@ namespace FriskBot.Cli
         {
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
-            await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync("Hello world!");
+            await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync("Hello world 2!");
 
             //return Task.CompletedTask;
         }
