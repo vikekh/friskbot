@@ -21,6 +21,7 @@ namespace FriskBot.Cli
     {
         private readonly DiscordSocketClient _client;
         private const string _version = "v0.1.2";
+        private DateTime _started = DateTime.Now;
 
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
@@ -80,12 +81,15 @@ namespace FriskBot.Cli
         private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
         {
             if (arg2.EditedTimestamp != null) {
+                sortedEdits.Add(history[arg2.Id]);
+
                 await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
                 history[arg2.Id] = arg2.Content;
             }
         }
 
         Dictionary<ulong, string> history = new Dictionary<ulong, string>();
+        List<string> sortedEdits = new List<string>();
         // This is not the recommended way to write a bot - consider
         // reading over the Commands Framework sample.
         private async Task MessageReceivedAsync(SocketMessage message)
@@ -109,7 +113,7 @@ namespace FriskBot.Cli
                 {
                     await message.Channel.SendMessageAsync("böghög");
                 } else if(message.Content.Length > 5) {
-                    await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5));
+                    await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5).ToUpper());
                 } else {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
                 }
@@ -119,7 +123,21 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("If frisk is the clown wolf does that make me a clown bot? :(");
             }
 
-            if (message.Content.StartsWith("!calc")) {
+            if(message.Content.StartsWith("!edit ")) {
+                int index = -1;
+
+                if(int.TryParse(message.Content.Substring(6), out index) && index < sortedEdits.Count) {
+                    await message.Channel.SendMessageAsync(sortedEdits.Skip(sortedEdits.Count - 1 - index).First());
+                }
+            }
+
+            if(message.Content.StartsWith("!uptime")) {
+                await message.Channel.SendMessageAsync("I've been alive for " + (DateTime.UtcNow - _started).TotalHours);
+            }
+
+            if (message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "KATTEN+MUSEN") {
+                await message.Channel.SendMessageAsync("tiotusen");
+            } else if (message.Content.StartsWith("!calc")) {
                 try {
                     SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
                     var bla = new Dictionary<string, double>();
@@ -144,7 +162,7 @@ namespace FriskBot.Cli
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + date.Year);
                 } else {
-                    var days = (date - new DateTime(date.Year - 1, 10, 1)).Days;
+                    var days = (date - new DateTime(date.Year - 1, 10, 1)).Days + 1;
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + (date.Year - 1));
                 }
