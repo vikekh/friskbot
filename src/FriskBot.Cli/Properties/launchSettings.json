@@ -1,7 +1,10 @@
 {
   "profiles": {
     "FriskBot.Cli": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "token": ""
+      }
     },
     "Docker": {
       "commandName": "Docker"
