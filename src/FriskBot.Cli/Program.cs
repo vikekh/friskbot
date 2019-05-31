@@ -1,9 +1,11 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FriskBot.Cli
@@ -171,6 +173,19 @@ namespace FriskBot.Cli
 
             if(message.Content == "!cat") {
                 await message.Channel.SendMessageAsync("https://cataas.com/cat?" + _rnd.Next());
+            }
+
+            if (message.Content == "!dog") {
+                try {
+                    HttpClient dogFetcher = new HttpClient();
+                    var temp = await dogFetcher.GetStringAsync("https://dog.ceo/api/breeds/image/random");
+
+                    dynamic dogguJson = JObject.Parse(temp);
+
+                    await message.Channel.SendMessageAsync(dogguJson.message);
+                } catch (Exception exc) {
+                    await message.Channel.SendMessageAsync("Något gick jättefel :( " + exc.Message);
+                }
             }
 
             if (message.Content == "!ping")
