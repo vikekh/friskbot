@@ -139,7 +139,7 @@ namespace FriskBot.Cli
                     var channels = guild.Channels.Where(p => isfriendochannel(p));
 
                     if (channels.Count() > 12) {
-                        channels.OrderBy(p => p.CreatedAt).Reverse().Take(12);
+                        channels = channels.OrderBy(p => p.CreatedAt).Reverse().Take(12);
                     }
 
                     var survivors = new HashSet<ulong>(channels.Select(p => p.Id));
