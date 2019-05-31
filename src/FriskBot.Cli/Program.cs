@@ -127,15 +127,9 @@ namespace FriskBot.Cli
             }
 
             if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488) {
-                await message.Channel.SendMessageAsync("hi frisk, since viktor cant setup this properly you have to debug like this, im here");
-
                 var guild = _client.Guilds.FirstOrDefault(p => p.Id == 84660308882239488);
 
-                await message.Channel.SendMessageAsync("hi frisk, since viktor cant setup this properly you have to debug like this, im here");
-
                 if (guild != null) {
-                    await message.Channel.SendMessageAsync("hi frisk, since viktor cant setup this properly you have to debug like this, im here");
-
                     var channels = guild.Channels.Where(p => isfriendochannel(p));
 
                     if (channels.Count() > 12) {
@@ -145,12 +139,10 @@ namespace FriskBot.Cli
                     var survivors = new HashSet<ulong>(channels.Select(p => p.Id));
 
                     foreach (var channel in guild.Channels.Where(p => !survivors.Contains(p.Id))) {
-                        //await channel.DeleteAsync();
-
-
+                        await channel.DeleteAsync();
                     }
 
-                    await message.Channel.SendMessageAsync(string.Join(" ", guild.Channels.Where(p => !survivors.Contains(p.Id)).Select(p => p.Name)));
+                    //await message.Channel.SendMessageAsync(string.Join(" ", guild.Channels.Where(p => !survivors.Contains(p.Id)).Select(p => p.Name)));
                 }
 
 
