@@ -22,6 +22,7 @@ namespace FriskBot.Cli
         private readonly DiscordSocketClient _client;
         private const string _version = "v0.1.2";
         private DateTime _started = DateTime.Now;
+        private Random _rnd = new Random();
 
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
@@ -166,6 +167,10 @@ namespace FriskBot.Cli
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + (date.Year - 1));
                 }
+            }
+
+            if(message.Content == "!cat") {
+                await message.Channel.SendMessageAsync("https://cataas.com/cat?" + _rnd.Next());
             }
 
             if (message.Content == "!ping")
