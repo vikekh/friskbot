@@ -182,7 +182,7 @@ namespace FriskBot.Cli
 
                     dynamic dogguJson = JObject.Parse(temp);
 
-                    await message.Channel.SendMessageAsync(dogguJson.message);
+                    await message.Channel.SendMessageAsync((string)dogguJson.message);
                 } catch (Exception exc) {
                     await message.Channel.SendMessageAsync("Något gick jättefel :( " + exc.Message);
                 }
