@@ -93,7 +93,19 @@ namespace FriskBot.Cli
 
         private bool isfriendochannel(SocketGuildChannel channel)
         {
+            if (channel.Name.Any(p => p > 255)) {
+                return false;
+            }
+
+            string formattedlikemad = channel.Name.Replace(" ", "").Replace("-", "").Replace(",", "").Replace(".", "").ToUpper();
+
+            if(formattedlikemad.Contains("FRISK") || formattedlikemad.Contains("MATTIAS") || formattedlikemad.Contains("HUGO") || formattedlikemad.Contains("FAGGOT") ||
+                formattedlikemad.Contains("AKALI") || formattedlikemad.Contains("CATPCHA")) {
+                return false;
+            }
+
             return true;
+
         }
 
         Dictionary<ulong, string> history = new Dictionary<ulong, string>();
@@ -110,10 +122,20 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync(_version);
             }
 
+            if(message.Content == "!id") {
+                await message.Channel.SendMessageAsync(message.Channel.Id + "," + string.Join(";", _client.Guilds.Select(p => p.Id)));
+            }
+
             if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488) {
+                await message.Channel.SendMessageAsync("hi frisk, since viktor cant setup this properly you have to debug like this, im here");
+
                 var guild = _client.Guilds.FirstOrDefault(p => p.Id == 84660308882239488);
 
+                await message.Channel.SendMessageAsync("hi frisk, since viktor cant setup this properly you have to debug like this, im here");
+
                 if (guild != null) {
+                    await message.Channel.SendMessageAsync("hi frisk, since viktor cant setup this properly you have to debug like this, im here");
+
                     var channels = guild.Channels.Where(p => isfriendochannel(p));
 
                     if (channels.Count() > 12) {
@@ -128,7 +150,7 @@ namespace FriskBot.Cli
 
                     }
 
-                    await message.Channel.SendMessageAsync(string.Join(" ", guild.Channels.Where(p => !survivors.Contains(p.Id))));
+                    await message.Channel.SendMessageAsync(string.Join(" ", guild.Channels.Where(p => !survivors.Contains(p.Id)).Select(p => p.Name)));
                 }
 
 
