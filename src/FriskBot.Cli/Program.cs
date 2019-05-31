@@ -91,6 +91,11 @@ namespace FriskBot.Cli
             }
         }
 
+        private bool isfriendochannel(SocketGuildChannel channel)
+        {
+            return true;
+        }
+
         Dictionary<ulong, string> history = new Dictionary<ulong, string>();
         List<string> sortedEdits = new List<string>();
         // This is not the recommended way to write a bot - consider
@@ -101,21 +106,42 @@ namespace FriskBot.Cli
             if (message.Author.Id == _client.CurrentUser.Id)
                 return;
 
-            if (message.Content.StartsWith("!version"))
-            {
+            if (message.Content.StartsWith("!version")) {
                 await message.Channel.SendMessageAsync(_version);
             }
-          
+
+            if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488) {
+                var guild = _client.Guilds.FirstOrDefault(p => p.Id == 84660308882239488);
+
+                if (guild != null) {
+                    var channels = guild.Channels.Where(p => isfriendochannel(p));
+
+                    if (channels.Count() > 12) {
+                        channels.OrderBy(p => p.CreatedAt).Reverse().Take(12);
+                    }
+
+                    var survivors = new HashSet<ulong>(channels.Select(p => p.Id));
+
+                    foreach (var channel in guild.Channels.Where(p => !survivors.Contains(p.Id))) {
+                        //await channel.DeleteAsync();
+
+
+                    }
+
+                    await message.Channel.SendMessageAsync(string.Join(" ", guild.Channels.Where(p => !survivors.Contains(p.Id))));
+                }
+
+
+            }
+
             history.Add(message.Id, message.Content);
 
             if (message.Content.StartsWith("!help")) {
-                if (message.Content.ToLower() == "!help nilaus")
-                {
+                if (message.Content.ToLower() == "!help nilaus") {
                     await message.Channel.SendMessageAsync("HEY MUFFIN! HELP NILAUS BULLY BUM");
-                } else if (message.Content.ToLower() == "!help viktor")
-                {
+                } else if (message.Content.ToLower() == "!help viktor") {
                     await message.Channel.SendMessageAsync("böghög");
-                } else if(message.Content.Length > 5) {
+                } else if (message.Content.Length > 5) {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5).ToUpper());
                 } else {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
@@ -126,15 +152,15 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("If frisk is the clown wolf does that make me a clown bot? :(");
             }
 
-            if(message.Content.StartsWith("!edit ")) {
+            if (message.Content.StartsWith("!edit ") && message.Channel.Id == 503278200064049152) {
                 int index = -1;
 
-                if(int.TryParse(message.Content.Substring(6), out index) && index < sortedEdits.Count) {
+                if (int.TryParse(message.Content.Substring(6), out index) && index < sortedEdits.Count) {
                     await message.Channel.SendMessageAsync(sortedEdits.Skip(sortedEdits.Count - 1 - index).First());
                 }
             }
 
-            if(message.Content.StartsWith("!uptime")) {
+            if (message.Content.StartsWith("!uptime")) {
                 await message.Channel.SendMessageAsync("I've been alive for " + (DateTime.UtcNow - _started).TotalHours);
             }
 
@@ -160,7 +186,7 @@ namespace FriskBot.Cli
             if (message.Content == "!datum") {
                 DateTime date = DateTime.Now;
 
-                if(date > new DateTime(date.Year, 10, 1)) {
+                if (date > new DateTime(date.Year, 10, 1)) {
                     var days = (date - new DateTime(date.Year, 10, 1)).Days + 1;
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + date.Year);
@@ -171,7 +197,7 @@ namespace FriskBot.Cli
                 }
             }
 
-            if(message.Content == "!cat") {
+            if (message.Content == "!cat") {
                 await message.Channel.SendMessageAsync("https://cataas.com/cat?" + _rnd.Next());
             }
 
