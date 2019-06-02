@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -210,9 +211,9 @@ namespace FriskBot.Cli
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + (date.Year - 1));
                 }
             }
-
+            
             if(message.Content.StartsWith("!cat ")) {
-                await message.Channel.SendMessageAsync("https://cataas.com/cat/says/" + message.Content.Substring(5) + _rnd.Next());
+                await message.Channel.SendMessageAsync("https://cataas.com/cat/says/" + WebUtility.UrlEncode(message.Content.Substring(5)) + "?" +  _rnd.Next());
             } else if (message.Content == "!cat") {
                 await message.Channel.SendMessageAsync("https://cataas.com/cat?" + _rnd.Next());
             }
