@@ -211,7 +211,9 @@ namespace FriskBot.Cli
                 }
             }
 
-            if (message.Content == "!cat") {
+            if(message.Content.StartsWith("!cat ")) {
+                await message.Channel.SendMessageAsync("https://cataas.com/cat/says/" + message.Content.Substring(5) + _rnd.Next());
+            } else if (message.Content == "!cat") {
                 await message.Channel.SendMessageAsync("https://cataas.com/cat?" + _rnd.Next());
             }
 
