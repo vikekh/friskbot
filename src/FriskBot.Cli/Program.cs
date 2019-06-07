@@ -23,7 +23,7 @@ namespace FriskBot.Cli
     class Program
     {
         private readonly DiscordSocketClient _client;
-        private const string _version = "v0.1.3";
+        private const string _version = "v0.1.4";
         private DateTime _started = DateTime.Now;
         private Random _rnd = new Random();
 
