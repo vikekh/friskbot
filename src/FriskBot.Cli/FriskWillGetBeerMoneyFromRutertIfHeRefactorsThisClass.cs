@@ -1,9 +1,11 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FriskBot.Cli
@@ -17,11 +19,12 @@ namespace FriskBot.Cli
     // - Here, under the 02_commands_framework sample
     // - https://github.com/foxbot/DiscordBotBase - a bare-bones bot template
     // - https://github.com/foxbot/patek - a more feature-filled bot, utilizing more aspects of the library
-    class OldProgram
+    class FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass
     {
         private readonly DiscordSocketClient _client;
-        private const string _version = "v0.1.2";
+        private const string _version = "v0.2.0";
         private DateTime _started = DateTime.Now;
+        private Random _rnd = new Random();
 
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
@@ -30,7 +33,7 @@ namespace FriskBot.Cli
         //    new Program().MainAsync(args).GetAwaiter().GetResult();
         //}
 
-        public OldProgram(DiscordSocketClient discordSocketClient)
+        public FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(DiscordSocketClient discordSocketClient)
         {
             // It is recommended to Dispose of a client when you are finished
             // using it, at the end of your app's lifetime.
@@ -92,6 +95,25 @@ namespace FriskBot.Cli
             }
         }
 
+        private bool isfriendochannel(SocketGuildChannel channel)
+        {
+            if (channel.Name.Any(p => p > 255))
+            {
+                return false;
+            }
+
+            string formattedlikemad = channel.Name.Replace(" ", "").Replace("-", "").Replace(",", "").Replace(".", "").ToUpper();
+
+            if (formattedlikemad.Contains("FRISK") || formattedlikemad.Contains("MATTIAS") || formattedlikemad.Contains("HUGO") || formattedlikemad.Contains("FAGGOT") ||
+                formattedlikemad.Contains("AKALI") || formattedlikemad.Contains("CATPCHA"))
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
         Dictionary<ulong, string> history = new Dictionary<ulong, string>();
         List<string> sortedEdits = new List<string>();
         // This is not the recommended way to write a bot - consider
@@ -105,6 +127,37 @@ namespace FriskBot.Cli
             if (message.Content.StartsWith("!version"))
             {
                 await message.Channel.SendMessageAsync(_version);
+            }
+
+            if (message.Content == "!id")
+            {
+                await message.Channel.SendMessageAsync(message.Channel.Id + "," + string.Join(";", _client.Guilds.Select(p => p.Id)));
+            }
+
+            if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488)
+            {
+                var guild = _client.Guilds.FirstOrDefault(p => p.Id == 84660308882239488);
+
+                if (guild != null)
+                {
+                    var channels = guild.Channels.Where(p => isfriendochannel(p));
+
+                    if (channels.Count() > 12)
+                    {
+                        channels = channels.OrderBy(p => p.CreatedAt).Reverse().Take(12);
+                    }
+
+                    var survivors = new HashSet<ulong>(channels.Select(p => p.Id));
+
+                    foreach (var channel in guild.Channels.Where(p => !survivors.Contains(p.Id)))
+                    {
+                        await channel.DeleteAsync();
+                    }
+
+                    //await message.Channel.SendMessageAsync(string.Join(" ", guild.Channels.Where(p => !survivors.Contains(p.Id)).Select(p => p.Name)));
+                }
+
+
             }
 
             history.Add(message.Id, message.Content);
@@ -134,7 +187,7 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("If frisk is the clown wolf does that make me a clown bot? :(");
             }
 
-            if (message.Content.StartsWith("!edit "))
+            if (message.Content.StartsWith("!edit ") && message.Channel.Id == 503278200064049152)
             {
                 int index = -1;
 
@@ -189,6 +242,32 @@ namespace FriskBot.Cli
                     var days = (date - new DateTime(date.Year - 1, 10, 1)).Days + 1;
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + (date.Year - 1));
+                }
+            }
+
+            if (message.Content.StartsWith("!cat "))
+            {
+                await message.Channel.SendMessageAsync("https://cataas.com/cat/says/" + Uri.EscapeDataString(message.Content.Substring(5)) + "?" + _rnd.Next());
+            }
+            else if (message.Content == "!cat")
+            {
+                await message.Channel.SendMessageAsync("https://cataas.com/cat?" + _rnd.Next());
+            }
+
+            if (message.Content == "!dog")
+            {
+                try
+                {
+                    HttpClient dogFetcher = new HttpClient();
+                    var temp = await dogFetcher.GetStringAsync("https://dog.ceo/api/breeds/image/random");
+
+                    dynamic dogguJson = JObject.Parse(temp);
+
+                    await message.Channel.SendMessageAsync((string)dogguJson.message);
+                }
+                catch (Exception exc)
+                {
+                    await message.Channel.SendMessageAsync("Något gick jättefel :( " + exc.Message);
                 }
             }
 

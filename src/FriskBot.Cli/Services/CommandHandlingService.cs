@@ -12,7 +12,7 @@ namespace FriskBot.Cli.Services
     {
         private readonly CommandService _commandService;
         private readonly DiscordSocketClient _discordSocketClient;
-        private readonly OldProgram _oldProgram;
+        private readonly FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass _oldProgram;
         private readonly IServiceProvider _services;
 
         public CommandHandlingService(DiscordSocketClient discordSocketClient, CommandService commandService, IServiceProvider services)
@@ -20,7 +20,7 @@ namespace FriskBot.Cli.Services
             _discordSocketClient = discordSocketClient;
             _commandService = commandService;
             _services = services;
-            _oldProgram = new OldProgram(discordSocketClient);
+            _oldProgram = new FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(discordSocketClient);
 
             // Hook CommandExecuted to handle post-command-execution logic.
             _commandService.CommandExecuted += CommandExecutedAsync;
