@@ -17,7 +17,7 @@ namespace FriskBot.Cli.Modules
         public Task PingAsync()
             => ReplyAsync("pong!");
 
-        [Command("cat")]
+        /*[Command("cat")]
         public async Task CatAsync()
         {
             // Get a stream containing an image of a cat
@@ -25,7 +25,7 @@ namespace FriskBot.Cli.Modules
             // Streams must be seeked to their beginning before being uploaded!
             stream.Seek(0, SeekOrigin.Begin);
             await Context.Channel.SendFileAsync(stream, "cat.png");
-        }
+        }*/
 
         // Get info on a user, or the user who invoked the command if one is not specified
         [Command("userinfo")]
