@@ -8,3 +8,4 @@ services:
       dockerfile: src/FriskBot.Cli/Dockerfile
     environment:
       - FRISKBOT=${FRISKBOT}
+      - ASPNETCORE_ENVIRONMENT=Production

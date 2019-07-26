@@ -20,7 +20,7 @@ namespace FriskBot.Cli.Services
             _discordSocketClient = discordSocketClient;
             _commandService = commandService;
             _services = services;
-            _oldProgram = new FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(discordSocketClient);
+            _oldProgram = new FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(discordSocketClient, services);
 
             // Hook CommandExecuted to handle post-command-execution logic.
             _commandService.CommandExecuted += CommandExecutedAsync;

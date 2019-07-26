@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,7 @@ namespace FriskBot.Cli
         //    new Program().MainAsync(args).GetAwaiter().GetResult();
         //}
 
-        public FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(DiscordSocketClient discordSocketClient)
+        public FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(DiscordSocketClient discordSocketClient, IServiceProvider services)
         {
             // It is recommended to Dispose of a client when you are finished
             // using it, at the end of your app's lifetime.
@@ -43,6 +45,8 @@ namespace FriskBot.Cli
             _client.Ready += ReadyAsync;
             _client.MessageReceived += MessageReceivedAsync;
             _client.MessageUpdated += MessageUpdatedAsync;
+
+            var settings = services.GetRequiredService<IOptions<Settings>>().Value;
         }
 
         //public async Task MainAsync(string[] args)
