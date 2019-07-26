@@ -42,7 +42,7 @@ namespace FriskBot.Cli
 
                 // Tokens should be considered secret data and never hard-coded.
                 // We can read from the environment variable to avoid hardcoding.
-                await client.LoginAsync(TokenType.Bot, services.GetRequiredService<IOptions<Settings>>().Value.DiscordBotToken);
+                await client.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN"));
                 await client.StartAsync();
 
                 // Here we initialize the logic required to register our commands.

@@ -28,6 +28,9 @@ namespace FriskBot.Cli
         private DateTime _started = DateTime.Now;
         private Random _rnd = new Random();
 
+        private readonly string AzureComputerVisionApiKey = Environment.GetEnvironmentVariable("AZURE_COMPUTER_VISION_API_KEY");
+        private readonly string AzureLuisApiKey = Environment.GetEnvironmentVariable("AZURE_LUIS_API_KEY");
+
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
         //static void Main(string[] args)
@@ -46,7 +49,8 @@ namespace FriskBot.Cli
             _client.MessageReceived += MessageReceivedAsync;
             _client.MessageUpdated += MessageUpdatedAsync;
 
-            var settings = services.GetRequiredService<IOptions<Settings>>().Value;
+            Console.WriteLine($"AZURE_COMPUTER_VISION_API_KEY={AzureComputerVisionApiKey}");
+            Console.WriteLine($"AZURE_LUIS_API_KEY={AzureLuisApiKey}");
         }
 
         //public async Task MainAsync(string[] args)
