@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,9 @@ namespace FriskBot.Cli
         private DateTime _started = DateTime.Now;
         private Random _rnd = new Random();
 
+        private readonly string AzureComputerVisionApiKey = Environment.GetEnvironmentVariable("AZURE_COMPUTER_VISION_API_KEY");
+        private readonly string AzureLuisApiKey = Environment.GetEnvironmentVariable("AZURE_LUIS_API_KEY");
+
         // Discord.Net heavily utilizes TAP for async, so we create
         // an asynchronous context from the beginning.
         //static void Main(string[] args)
@@ -33,7 +38,7 @@ namespace FriskBot.Cli
         //    new Program().MainAsync(args).GetAwaiter().GetResult();
         //}
 
-        public FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(DiscordSocketClient discordSocketClient)
+        public FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass(DiscordSocketClient discordSocketClient, IServiceProvider services)
         {
             // It is recommended to Dispose of a client when you are finished
             // using it, at the end of your app's lifetime.
@@ -43,6 +48,9 @@ namespace FriskBot.Cli
             _client.Ready += ReadyAsync;
             _client.MessageReceived += MessageReceivedAsync;
             _client.MessageUpdated += MessageUpdatedAsync;
+
+            Console.WriteLine($"AZURE_COMPUTER_VISION_API_KEY={AzureComputerVisionApiKey}");
+            Console.WriteLine($"AZURE_LUIS_API_KEY={AzureLuisApiKey}");
         }
 
         //public async Task MainAsync(string[] args)

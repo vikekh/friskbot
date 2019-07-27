@@ -3,8 +3,11 @@ version: '3'
 services:
   friskbot-cli:
     image: vikekh/friskbot-cli:latest
+    container_name: friskbot-cli
     build:
       context: .
       dockerfile: src/FriskBot.Cli/Dockerfile
     environment:
-      - FRISKBOT=${FRISKBOT}
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - AZURE_COMPUTER_VISION_API_KEY=${AZURE_COMPUTER_VISION_API_KEY}
+      - AZURE_LUIS_API_KEY=${AZURE_LUIS_API_KEY}

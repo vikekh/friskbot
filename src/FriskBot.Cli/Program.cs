@@ -2,8 +2,11 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using FriskBot.Cli.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -39,7 +42,7 @@ namespace FriskBot.Cli
 
                 // Tokens should be considered secret data and never hard-coded.
                 // We can read from the environment variable to avoid hardcoding.
-                await client.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("FRISKBOT"));
+                await client.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN"));
                 await client.StartAsync();
 
                 // Here we initialize the logic required to register our commands.
@@ -58,12 +61,20 @@ namespace FriskBot.Cli
 
         private ServiceProvider ConfigureServices()
         {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true);
+            var config = builder.Build();
+
             return new ServiceCollection()
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
                 .AddSingleton<HttpClient>()
                 .AddSingleton<PictureService>()
+                .AddOptions()
+                .Configure<Settings>(config)
                 .BuildServiceProvider();
         }
     }
