@@ -8,5 +8,6 @@
     <ProjectGuid>{A6ED74E8-799C-452E-8581-ED8DF10548A6}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Discord.Net" Version="2.0.1" />
   </ItemGroup>
 </Project>

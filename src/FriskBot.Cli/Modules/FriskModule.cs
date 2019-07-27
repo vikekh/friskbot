@@ -7,5 +7,6 @@ namespace FriskBot.Cli.Modules
 {
     public class FriskModule : ModuleBase<SocketCommandContext>
     {
+
     }
 }

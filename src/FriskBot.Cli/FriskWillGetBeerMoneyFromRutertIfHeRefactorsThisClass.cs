@@ -149,15 +149,13 @@ namespace FriskBot.Cli
 
                     var survivors = new HashSet<ulong>(channels.Select(p => p.Id));
 
-                    foreach (var channel in guild.Channels.Where(p => !survivors.Contains(p.Id)))
-                    {
-                        await channel.DeleteAsync();
-                    }
+                    //foreach (var channel in guild.Channels.Where(p => !survivors.Contains(p.Id)))
+                    //{
+                    //    await channel.DeleteAsync();
+                    //}
 
                     //await message.Channel.SendMessageAsync(string.Join(" ", guild.Channels.Where(p => !survivors.Contains(p.Id)).Select(p => p.Name)));
                 }
-
-
             }
 
             history.Add(message.Id, message.Content);
