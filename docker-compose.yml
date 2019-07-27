@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: src/FriskBot.Cli/Dockerfile
+    volumes:
+      - ${DATA_PATH}:/data
     environment:
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
       - AZURE_COMPUTER_VISION_API_KEY=${AZURE_COMPUTER_VISION_API_KEY}
