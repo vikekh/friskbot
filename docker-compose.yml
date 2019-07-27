@@ -8,8 +8,18 @@ services:
       context: .
       dockerfile: src/FriskBot.Cli/Dockerfile
     volumes:
-      - ${DATA_PATH}:/data
+      - ${FRISKBOT_DATA_DIR}:/data
     environment:
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
       - AZURE_COMPUTER_VISION_API_KEY=${AZURE_COMPUTER_VISION_API_KEY}
       - AZURE_LUIS_API_KEY=${AZURE_LUIS_API_KEY}
+      - MSSQL_SERVER_SA_PASSWORD=${MSSQL_SERVER_SA_PASSWORD}
+  mssql-server:
+    image: mcr.microsoft.com/mssql/server:latest-ubuntu
+    container_name: mssql-server
+    volumes:
+      - ${MSSQL_SERVER_DIR}:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${MSSQL_SERVER_SA_PASSWORD}
+      - MSSQL_PID=Developer

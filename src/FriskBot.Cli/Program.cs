@@ -73,7 +73,11 @@ namespace FriskBot.Cli
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true);
             var config = builder.Build();
 
+            // https://docs.docker.com/compose/aspnet-mssql-compose/
+            var connection = $"Server=db;Database=master;User=sa;Password={Environment.GetEnvironmentVariable("MSSQL_SERVER_SA_PASSWORD")};";
+
             return new ServiceCollection()
+                //.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection))
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
