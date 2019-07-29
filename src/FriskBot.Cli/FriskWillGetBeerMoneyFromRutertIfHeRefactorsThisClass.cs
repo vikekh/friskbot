@@ -159,9 +159,11 @@ namespace FriskBot.Cli
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
-
-                    await message.Channel.SendMessageAsync(message.Author.Username + " posted an image with " + string.Join(',', tags));
                 }
+            }
+
+            if(message.Author.Id == 84706367121657856) {
+
             }
 
             if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488) {
