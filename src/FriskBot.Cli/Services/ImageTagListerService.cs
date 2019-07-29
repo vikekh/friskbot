@@ -3,6 +3,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 
@@ -55,14 +56,19 @@ namespace FriskBot.Cli.Services
             public string Format { get; set; }
         }
 
-        public static async void flerg()
+        public static async Task<string[]> GetImageTags(string urlis)
         {
             lock(_warlock) {
+
+                if((DateTime.Now - _lastRequest).TotalMilliseconds < 100) {
+                    System.Threading.Thread.Sleep(50);
+                }
+
                 var client = new HttpClient();
                 var queryString = HttpUtility.ParseQueryString(string.Empty);
 
                 // Request headers
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "5d7c8b589b264b80aa0c2a6ff1752e1e");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Environment.GetEnvironmentVariable("AZURE_COMPUTER_VISION_API_KEY"));
 
                 // Request parameters
                 queryString["maxCandidates"] = "1";
@@ -72,7 +78,7 @@ namespace FriskBot.Cli.Services
                 HttpResponseMessage response;
 
                 // Request body
-                byte[] byteData = Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(new { url = "https://cdn.discordapp.com/attachments/503278200064049152/604058857194389504/FByFMr8.jpg" }));
+                byte[] byteData = Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(new { url = urlis }));
 
                 using (var content = new ByteArrayContent(byteData)) {
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -84,8 +90,10 @@ namespace FriskBot.Cli.Services
                 try {
                     var content = response.Content.ReadAsStringAsync().Result;
                     var visionResult = Newtonsoft.Json.JsonConvert.DeserializeObject<VisionResult>(content);
-                } catch (Exception exc) {
 
+                    return visionResult.Description.Tags;
+                } catch (Exception exc) {
+                    return null;
                 }
             }
         }

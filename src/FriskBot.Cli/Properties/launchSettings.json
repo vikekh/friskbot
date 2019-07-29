@@ -2,9 +2,12 @@
   "profiles": {
     "FriskBot.Cli": {
       "commandName": "Project",
-      "environmentVariables": {
-        "token": ""
-      }
+        "environmentVariables": {
+            "token": "",
+            "DISCORD_BOT_TOKEN": "NjA0NDczOTg1MDY0NzYzNDEy.XTueUw.ONjuQ8g9DMNCUzS7F6LYr8EHg0o",
+            "AZURE_COMPUTER_VISION_API_KEY": "5d7c8b589b264b80aa0c2a6ff1752e1e",
+            "AZURE_LUIS_API_KEY": "360ec6c860804dc1992989f1cec7375e"
+        }
     },
     "Docker": {
       "commandName": "Docker"

@@ -15,7 +15,7 @@ namespace FriskBot.Cli.Services
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
             // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "360ec6c860804dc1992989f1cec7375e");
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Environment.GetEnvironmentVariable("AZURE_LUIS_API_KEY"));
 
             // Request parameters
             queryString["showStats"] = "false";
@@ -37,8 +37,6 @@ namespace FriskBot.Cli.Services
             } catch (Exception exc) {
 
             }
-
-            Console.WriteLine("Hello World!");
         }
 
         /*			client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "360ec6c860804dc1992989f1cec7375e");

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FriskBot.Cli
@@ -94,8 +95,7 @@ namespace FriskBot.Cli
 
         private async Task MessageUpdatedAsync(Cacheable<IMessage, ulong> arg1, SocketMessage arg2, ISocketMessageChannel arg3)
         {
-            if (arg2.EditedTimestamp != null)
-            {
+            if (arg2.EditedTimestamp != null) {
                 sortedEdits.Add(history[arg2.Id]);
 
                 await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
@@ -105,16 +105,14 @@ namespace FriskBot.Cli
 
         private bool isfriendochannel(SocketGuildChannel channel)
         {
-            if (channel.Name.Any(p => p > 255))
-            {
+            if (channel.Name.Any(p => p > 255)) {
                 return false;
             }
 
             string formattedlikemad = channel.Name.Replace(" ", "").Replace("-", "").Replace(",", "").Replace(".", "").ToUpper();
 
             if (formattedlikemad.Contains("FRISK") || formattedlikemad.Contains("MATTIAS") || formattedlikemad.Contains("HUGO") || formattedlikemad.Contains("FAGGOT") ||
-                formattedlikemad.Contains("AKALI") || formattedlikemad.Contains("CATPCHA"))
-            {
+                formattedlikemad.Contains("AKALI") || formattedlikemad.Contains("CATPCHA")) {
                 return false;
             }
 
@@ -132,26 +130,47 @@ namespace FriskBot.Cli
             if (message.Author.Id == _client.CurrentUser.Id)
                 return;
 
-            if (message.Content.StartsWith("!version"))
-            {
+            if (message.Content.StartsWith("!version")) {
                 await message.Channel.SendMessageAsync(_version);
             }
 
-            if (message.Content == "!id")
-            {
+            if (message.Content == "!id") {
                 await message.Channel.SendMessageAsync(message.Channel.Id + "," + string.Join(";", _client.Guilds.Select(p => p.Id)));
             }
 
-            if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488)
-            {
+
+            if (message.Author.Id == 297436465565007872) {
+                // stolen from https://stackoverflow.com/questions/10576686/c-sharp-regex-pattern-to-extract-urls-from-given-string-not-full-html-urls-but
+                var linkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+                foreach (Match m in linkParser.Matches(message.Content).Take(1)) {
+                    var tags = await Services.ImageTagListerService.GetImageTags(m.Value);
+
+                    if (tags.Any(p => p == "animal" || p == "beer")) {
+                        await message.Channel.SendMessageAsync("sluta stål");
+                        await message.DeleteAsync();
+                    }
+                }
+
+                foreach (string url in message.Attachments.Select(p => p.Url)) {
+                    var tags = await Services.ImageTagListerService.GetImageTags(url);
+
+                    if (tags.Any(p => p == "animal" || p == "beer")) {
+                        await message.Channel.SendMessageAsync("sluta stål");
+                        await message.DeleteAsync();
+                    }
+
+                    await message.Channel.SendMessageAsync(message.Author.Username + " posted an image with " + string.Join(',', tags));
+                }
+            }
+
+            if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488) {
                 var guild = _client.Guilds.FirstOrDefault(p => p.Id == 84660308882239488);
 
-                if (guild != null)
-                {
+                if (guild != null) {
                     var channels = guild.Channels.Where(p => isfriendochannel(p));
 
-                    if (channels.Count() > 12)
-                    {
+                    if (channels.Count() > 12) {
                         channels = channels.OrderBy(p => p.CreatedAt).Reverse().Take(12);
                     }
 
@@ -168,61 +187,43 @@ namespace FriskBot.Cli
 
             history.Add(message.Id, message.Content);
 
-            if (message.Content.StartsWith("!help"))
-            {
-                if (message.Content.ToLower() == "!help nilaus")
-                {
+            if (message.Content.StartsWith("!help")) {
+                if (message.Content.ToLower() == "!help nilaus") {
                     await message.Channel.SendMessageAsync("HEY MUFFIN! HELP NILAUS BULLY BUM");
-                }
-                else if (message.Content.ToLower() == "!help viktor")
-                {
+                } else if (message.Content.ToLower() == "!help viktor") {
                     await message.Channel.SendMessageAsync("böghög");
-                }
-                else if (message.Content.Length > 5)
-                {
+                } else if (message.Content.Length > 5) {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY" + message.Content.Substring(5).ToUpper());
-                }
-                else
-                {
+                } else {
                     await message.Channel.SendMessageAsync("HEY! DONT BULLY FRISK");
                 }
             }
 
-            if (message.Content.StartsWith("!clown"))
-            {
+            if (message.Content.StartsWith("!clown")) {
                 await message.Channel.SendMessageAsync("If frisk is the clown wolf does that make me a clown bot? :(");
             }
 
-            if (message.Content.StartsWith("!edit ") && message.Channel.Id == 503278200064049152)
-            {
+            if (message.Content.StartsWith("!edit ") && message.Channel.Id == 503278200064049152) {
                 int index = -1;
 
-                if (int.TryParse(message.Content.Substring(6), out index) && index < sortedEdits.Count)
-                {
+                if (int.TryParse(message.Content.Substring(6), out index) && index < sortedEdits.Count) {
                     await message.Channel.SendMessageAsync(sortedEdits.Skip(sortedEdits.Count - 1 - index).First());
                 }
             }
 
-            if (message.Content.StartsWith("!uptime"))
-            {
+            if (message.Content.StartsWith("!uptime")) {
                 await message.Channel.SendMessageAsync("I've been alive for " + (DateTime.UtcNow - _started).TotalHours);
             }
 
-            if (message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "KATTEN+MUSEN")
-            {
+            if (message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "KATTEN+MUSEN") {
                 await message.Channel.SendMessageAsync("tiotusen");
-            }
-            else if (message.Content.StartsWith("!calc"))
-            {
-                try
-                {
+            } else if (message.Content.StartsWith("!calc")) {
+                try {
                     SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
                     var bla = new Dictionary<string, double>();
 
                     await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
-                }
-                catch (Exception exc)
-                {
+                } catch (Exception exc) {
                     await message.Channel.SendMessageAsync("Felis: " + exc.Message);
                 }
             }
@@ -233,46 +234,35 @@ namespace FriskBot.Cli
             if (message.Content == "!vecka")
                 await message.Channel.SendMessageAsync(System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday).ToString());
 
-            if (message.Content == "!datum")
-            {
+            if (message.Content == "!datum") {
                 DateTime date = DateTime.Now;
 
-                if (date > new DateTime(date.Year, 10, 1))
-                {
+                if (date > new DateTime(date.Year, 10, 1)) {
                     var days = (date - new DateTime(date.Year, 10, 1)).Days + 1;
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + date.Year);
-                }
-                else
-                {
+                } else {
                     var days = (date - new DateTime(date.Year - 1, 10, 1)).Days + 1;
 
                     await message.Channel.SendMessageAsync("It's the " + days + "st of October, " + (date.Year - 1));
                 }
             }
 
-            if (message.Content.StartsWith("!cat "))
-            {
+            if (message.Content.StartsWith("!cat ")) {
                 await message.Channel.SendMessageAsync("https://cataas.com/cat/says/" + Uri.EscapeDataString(message.Content.Substring(5)) + "?" + _rnd.Next());
-            }
-            else if (message.Content == "!cat")
-            {
+            } else if (message.Content == "!cat") {
                 await message.Channel.SendMessageAsync("https://cataas.com/cat?" + _rnd.Next());
             }
 
-            if (message.Content == "!dog")
-            {
-                try
-                {
+            if (message.Content == "!dog") {
+                try {
                     HttpClient dogFetcher = new HttpClient();
                     var temp = await dogFetcher.GetStringAsync("https://dog.ceo/api/breeds/image/random");
 
                     dynamic dogguJson = JObject.Parse(temp);
 
                     await message.Channel.SendMessageAsync((string)dogguJson.message);
-                }
-                catch (Exception exc)
-                {
+                } catch (Exception exc) {
                     await message.Channel.SendMessageAsync("Något gick jättefel :( " + exc.Message);
                 }
             }

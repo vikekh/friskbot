@@ -30,10 +30,10 @@ namespace FriskBot.Cli
         public async Task MainAsync()
         {
             // Write to Docker volume /data
-            using (StreamWriter writer = new StreamWriter("/data/test.txt", true))
-            {
-                writer.WriteLine("test");
-            }
+            //using (StreamWriter writer = new StreamWriter("/data/test.txt", true))
+            //{
+            //    writer.WriteLine("test");
+            //}
 
             // You should dispose a service provider created using ASP.NET
             // when you are finished using it, at the end of your app's lifetime.
