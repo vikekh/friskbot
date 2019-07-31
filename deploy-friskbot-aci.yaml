@@ -36,6 +36,9 @@ properties:
           value: Developer
   osType: Linux
   ipAddress:
-    type: Private
+    type: Public
+    ports:
+    - protocol: tcp
+      port: '8080'
 tags: null
 type: Microsoft.ContainerInstance/containerGroups
