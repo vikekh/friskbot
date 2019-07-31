@@ -1,0 +1,47 @@
+---
+apiVersion: 2018-10-01
+location: westeurope
+name: friskbotContainerGroup
+properties:
+  containers:
+  - name: friskbot-cli
+    properties:
+      image: vikekh/friskbot-cli:latest
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 2
+      volumeMounts:
+        - name: data
+          mountPath: ${FRISKBOT_DATA_DIR}:/data
+      environmentVariables:
+        - name: DISCORD_BOT_TOKEN
+          value: ${DISCORD_BOT_TOKEN}
+        - name: AZURE_COMPUTER_VISION_API_KEY
+          value: ${AZURE_COMPUTER_VISION_API_KEY}
+        - name: AZURE_LUIS_API_KEY
+          value: ${AZURE_LUIS_API_KEY}
+        - name: MSSQL_SERVER_SA_PASSWORD
+          value: ${MSSQL_SERVER_SA_PASSWORD}
+  - name: mssql-server
+    properties:
+      image: mcr.microsoft.com/mssql/server:latest-ubuntu
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      volumeMounts:
+        - name: serverDir
+          mountPath: ${MSSQL_SERVER_DIR}:/var/opt/mssql
+      environmentVariables:
+        - name: ACCEPT_EULAY
+          value: Y
+        - name: SA_PASSWORD
+          value: ${MSSQL_SERVER_SA_PASSWORD}
+        - name: MSSQL_PID
+          value: Developer
+  osType: Linux
+  ipAddress:
+    type: Private
+tags: null
+type: Microsoft.ContainerInstance/containerGroups
