@@ -11,9 +11,6 @@ properties:
         requests:
           cpu: 1
           memoryInGb: 2
-      volumeMounts:
-        - name: data
-          mountPath: ${FRISKBOT_DATA_DIR}:/data
       environmentVariables:
         - name: DISCORD_BOT_TOKEN
           value: ${DISCORD_BOT_TOKEN}
@@ -30,9 +27,6 @@ properties:
         requests:
           cpu: 1
           memoryInGb: 1.5
-      volumeMounts:
-        - name: serverDir
-          mountPath: ${MSSQL_SERVER_DIR}:/var/opt/mssql
       environmentVariables:
         - name: ACCEPT_EULAY
           value: Y
