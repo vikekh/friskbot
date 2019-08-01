@@ -13,9 +13,13 @@ properties:
           memoryInGb: 2
       environmentVariables:
         - name: DISCORD_BOT_TOKEN
+          value: "[variables('DISCORD_BOT_TOKEN')]"
         - name: AZURE_COMPUTER_VISION_API_KEY
+          value: "[variables('AZURE_COMPUTER_VISION_API_KEY')]"
         - name: AZURE_LUIS_API_KEY
+          value: "[variables('AZURE_LUIS_API_KEY')]"
         - name: MSSQL_SERVER_SA_PASSWORD
+          value: "[variables('MSSQL_SERVER_SA_PASSWORD')]"
   - name: mssql-server
     properties:
       image: mcr.microsoft.com/mssql/server:latest-ubuntu
@@ -27,6 +31,7 @@ properties:
         - name: ACCEPT_EULA
           value: Y
         - name: SA_PASSWORD
+          value: "[variables('MSSQL_SERVER_SA_PASSWORD')]"
         - name: MSSQL_PID
           value: Developer
   osType: Linux
