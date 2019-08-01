@@ -28,7 +28,7 @@ properties:
           cpu: 1
           memoryInGb: 1.5
       environmentVariables:
-        - name: ACCEPT_EULAY
+        - name: ACCEPT_EULA
           value: Y
         - name: SA_PASSWORD
           value: ${MSSQL_SERVER_SA_PASSWORD}
