@@ -1,0 +1,114 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "azureComputerVisionApiKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Vision key"
+      }
+    },
+    "azureLuisApiKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Luis Key"
+      }
+    },
+    "discordBotToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Båt token"
+      }
+    },
+    "mysqlPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "MySQL database password"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "westeurope",
+      "metadata": {
+        "description": "Location of container group"
+      }
+    }
+  },
+  "variables": {
+    "containerGroupName": "friskbotContainerGroup",
+    "friskBotName": "friskbot-cli",
+    "friskBotImage": "vikekh/friskbot-cli:latest",
+    "mssqlName": "mssql-server",
+    "mssqlImage": "mcr.microsoft.com/mssql/server:latest-ubuntu"
+  },
+  "resources": [
+    {
+      "name": "[variables('containerGroupName')]",
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2018-10-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "containers": [
+          {
+            "name": "[variables('friskBotName')]",
+            "properties": {
+              "image": "[parameters('friskBotImage')]",
+              "environmentVariables": [
+                {
+                  "name": "AZURE_COMPUTER_VISION_API_KEY",
+                  "secureValue": "[parameters('azureComputerVisionApiKey')]"
+                },
+                {
+                  "name": "AZURE_LUIS_API_KEY",
+                  "secureValue": "[parameters('azureLuisApiKey')]"
+                },
+                {
+                  "name": "DISCORD_BOT_TOKEN",
+                  "secureValue": "[parameters('discordBotToken')]"
+                },
+                {
+                  "name": "MSSQL_SERVER_SA_PASSWORD",
+                  "secureValue": "[parameters('mysqlPassword')]"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "1",
+                  "memoryInGb": "2"
+                }
+              }
+            }
+          },
+          {
+            "name": "[variables('mssqlName')]",
+            "properties": {
+              "image": "[variables('mssqlImage')]",
+              "environmentVariables": [
+                {
+                  "name": "ACCEPT_EULA",
+                  "value": "Y"
+                },
+                {
+                  "name": "MSSQL_PID",
+                  "value": "Developer"
+                },
+                {
+                  "name": "SA_PASSWORD",
+                  "value": "[parameters('mysqlPassword')]"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "1",
+                  "memoryInGb": "1.5"
+                }
+              }
+            }
+          }
+        ],
+        "restartPolicy": "OnFailure",
+        "osType": "Linux"
+      }
+    }
+  ]
+}
