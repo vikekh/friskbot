@@ -56,19 +56,19 @@
               "environmentVariables": [
                 {
                   "name": "AZURE_COMPUTER_VISION_API_KEY",
-                  "secureValue": "[parameters('azureComputerVisionApiKey')]"
+                  "value": "[parameters('azureComputerVisionApiKey')]"
                 },
                 {
                   "name": "AZURE_LUIS_API_KEY",
-                  "secureValue": "[parameters('azureLuisApiKey')]"
+                  "value": "[parameters('azureLuisApiKey')]"
                 },
                 {
                   "name": "DISCORD_BOT_TOKEN",
-                  "secureValue": "[parameters('discordBotToken')]"
+                  "value": "[parameters('discordBotToken')]"
                 },
                 {
                   "name": "MSSQL_SERVER_SA_PASSWORD",
-                  "secureValue": "[parameters('mysqlPassword')]"
+                  "value": "[parameters('mysqlPassword')]"
                 }
               ],
               "resources": {
