@@ -52,7 +52,7 @@
           {
             "name": "[variables('friskBotName')]",
             "properties": {
-              "image": "[parameters('friskBotImage')]",
+              "image": "[variables('friskBotImage')]",
               "environmentVariables": [
                 {
                   "name": "AZURE_COMPUTER_VISION_API_KEY",
