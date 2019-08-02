@@ -30,10 +30,6 @@ namespace FriskBot.Cli
         public async Task MainAsync()
         {
             // Write to Docker volume /data
-            //using (StreamWriter writer = new StreamWriter("/data/test.txt", true))
-            //{
-            //    writer.WriteLine("test");
-            //}
 
             // You should dispose a service provider created using ASP.NET
             // when you are finished using it, at the end of your app's lifetime.
@@ -50,6 +46,7 @@ namespace FriskBot.Cli
                 // We can read from the environment variable to avoid hardcoding.
                 await client.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN"));
                 await client.StartAsync();
+                await client.SetGameAsync("Sekiro 2: Electric Boogaloo");
 
                 // Here we initialize the logic required to register our commands.
                 await services.GetRequiredService<CommandHandlingService>().InitializeAsync();

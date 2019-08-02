@@ -24,10 +24,21 @@ namespace FriskBot.Cli
     // - https://github.com/foxbot/patek - a more feature-filled bot, utilizing more aspects of the library
     class FriskWillGetBeerMoneyFromRutertIfHeRefactorsThisClass
     {
+        public class RemindMe
+        {
+            public DateTime Date { get; set; }
+            public string Message { get; set; }
+            public string User { get; set; }
+            public ulong ChannelId { get; set; }
+            public ulong GuildId { get; set; }
+        }
+
         private readonly DiscordSocketClient _client;
         private const string _version = "v0.2.0";
         private DateTime _started = DateTime.Now;
         private Random _rnd = new Random();
+        private System.Threading.Timer _intervalTimer;
+        List<RemindMe> _remindMes = new List<RemindMe>();
 
         private readonly string AzureComputerVisionApiKey = Environment.GetEnvironmentVariable("AZURE_COMPUTER_VISION_API_KEY");
         private readonly string AzureLuisApiKey = Environment.GetEnvironmentVariable("AZURE_LUIS_API_KEY");
@@ -49,6 +60,17 @@ namespace FriskBot.Cli
             _client.Ready += ReadyAsync;
             _client.MessageReceived += MessageReceivedAsync;
             _client.MessageUpdated += MessageUpdatedAsync;
+
+            try {
+                _remindMes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RemindMe>>(System.IO.File.ReadAllText("/data/test.txt"));
+            } catch (Exception exc) {
+                Console.WriteLine("kunde inte läsa filfan: " + exc.Message);
+            }
+
+            TimeSpan tsInterval = new TimeSpan(0, 1, 0);
+            _intervalTimer = new System.Threading.Timer(
+                new System.Threading.TimerCallback(IntervalTimer_Elapsed)
+                , null, tsInterval, tsInterval);
 
             Console.WriteLine($"AZURE_COMPUTER_VISION_API_KEY={AzureComputerVisionApiKey}");
             Console.WriteLine($"AZURE_LUIS_API_KEY={AzureLuisApiKey}");
@@ -103,6 +125,29 @@ namespace FriskBot.Cli
             }
         }
 
+        private void IntervalTimer_Elapsed(object state)
+        {
+            try {
+                List<RemindMe> removies = new List<RemindMe>();
+
+                foreach (var remindMe in _remindMes.Where(p => DateTime.Now > p.Date)) {
+                    var res = _client.GetGuild(remindMe.GuildId).GetTextChannel(remindMe.ChannelId).SendMessageAsync("Hey " + remindMe.User + " " + remindMe.Message + " is happening").Result;
+                    
+                    removies.Add(remindMe);
+                }
+
+                foreach (var removie in removies) {
+                    _remindMes.Remove(removie);
+                }
+
+                if (removies.Any()) {
+                    System.IO.File.WriteAllText("/data/test.txt", Newtonsoft.Json.JsonConvert.SerializeObject(_remindMes));
+                }
+            } catch(Exception exc) {
+                Console.WriteLine("something went horribly wrong, contact the police: " + exc.Message);
+            }
+        }
+
         private bool isfriendochannel(SocketGuildChannel channel)
         {
             if (channel.Name.Any(p => p > 255)) {
@@ -121,6 +166,7 @@ namespace FriskBot.Cli
         }
 
         Dictionary<ulong, string> history = new Dictionary<ulong, string>();
+
         List<string> sortedEdits = new List<string>();
         // This is not the recommended way to write a bot - consider
         // reading over the Commands Framework sample.
@@ -138,8 +184,26 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync(message.Channel.Id + "," + string.Join(";", _client.Guilds.Select(p => p.Id)));
             }
 
-            if(message.Content == "!kodändring") {
+            if (message.Content == "!kodändring") {
                 await message.Channel.SendMessageAsync("lol");
+            }
+
+            if (message.Content.StartsWith("!remindme")) {
+                try {
+                    var split = message.Content.Split(" ");
+                    var date = DateTime.ParseExact(split[1] + " " + split[2], "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    var remindMessage = string.Join(" ", split.Skip(2));
+                    var chnl = message.Channel as SocketGuildChannel;
+
+                    _remindMes.Add(new RemindMe() { Date = date, Message = remindMessage, ChannelId = message.Channel.Id, User = message.Author.Mention, GuildId =  chnl.Guild.Id});
+
+                    System.IO.File.WriteAllText("/data/test.txt", Newtonsoft.Json.JsonConvert.SerializeObject(_remindMes));
+
+                    await message.Channel.SendMessageAsync("jag kommer påminna dig då jag är en duktig båt");
+                } catch (Exception exc) {
+                    await message.Channel.SendMessageAsync("du formaterade skiten fel, fråga frisk hur man gör: " + exc.Message);
+                }
+
             }
 
             if (message.Author.Id == 297436465565007872) {
@@ -158,14 +222,14 @@ namespace FriskBot.Cli
                 foreach (string url in message.Attachments.Select(p => p.Url)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(url);
 
-                    if (tags.Any(p => p == "animal" || p == "beer" || p  == "food")) {
+                    if (tags.Any(p => p == "animal" || p == "beer" || p == "food")) {
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
                 }
             }
 
-            if(message.Author.Id == 84706367121657856) {
+            if (message.Author.Id == 84706367121657856) {
 
             }
 
