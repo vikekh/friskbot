@@ -138,6 +138,9 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync(message.Channel.Id + "," + string.Join(";", _client.Guilds.Select(p => p.Id)));
             }
 
+            if(message.Content == "!kodändring") {
+                await message.Channel.SendMessageAsync("lol");
+            }
 
             if (message.Author.Id == 297436465565007872) {
                 // stolen from https://stackoverflow.com/questions/10576686/c-sharp-regex-pattern-to-extract-urls-from-given-string-not-full-html-urls-but
@@ -146,7 +149,7 @@ namespace FriskBot.Cli
                 foreach (Match m in linkParser.Matches(message.Content).Take(1)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(m.Value);
 
-                    if (tags.Any(p => p == "animal" || p == "beer")) {
+                    if (tags.Any(p => p == "animal" || p == "beer" || p == "food")) {
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
@@ -155,7 +158,7 @@ namespace FriskBot.Cli
                 foreach (string url in message.Attachments.Select(p => p.Url)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(url);
 
-                    if (tags.Any(p => p == "animal" || p == "beer")) {
+                    if (tags.Any(p => p == "animal" || p == "beer" || p  == "food")) {
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
