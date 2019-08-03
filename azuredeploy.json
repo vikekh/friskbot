@@ -38,7 +38,7 @@
   "variables": {
     "containerGroupName": "friskbotContainerGroup",
     "friskBotName": "friskbot-cli",
-    "friskBotImage": "vikekh/friskbot-cli:[parameters('friskBotImageTag')]"
+    "friskBotImageName": "vikekh/friskbot-cli"
   },
   "resources": [
     {
@@ -51,7 +51,7 @@
           {
             "name": "[variables('friskBotName')]",
             "properties": {
-              "image": "[variables('friskBotImage')]",
+              "image": "[variables('friskBotImageName')]:[parameters('friskBotImageTag')]",
               "environmentVariables": [
                 {
                   "name": "AZURE_COMPUTER_VISION_API_KEY",
