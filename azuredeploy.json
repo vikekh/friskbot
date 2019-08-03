@@ -20,6 +20,13 @@
         "description": "Båt token"
       }
     },
+    "friskBotImageTag": {
+      "type": "string",
+      "defaultValue": "latest",
+      "metadata": {
+        "description": "Tag for Frisk Båt to deploy"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "westeurope",
@@ -31,7 +38,7 @@
   "variables": {
     "containerGroupName": "friskbotContainerGroup",
     "friskBotName": "friskbot-cli",
-    "friskBotImage": "vikekh/friskbot-cli:latest"
+    "friskBotImage": "vikekh/friskbot-cli:[parameters('friskBotImageTag')]"
   },
   "resources": [
     {
