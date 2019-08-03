@@ -8,6 +8,12 @@
         "description": "Vision key"
       }
     },
+    "azureStorageAccountKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Key to file share on Azure"
+      }
+    },
     "azureLuisApiKey": {
       "type": "securestring",
       "metadata": {
@@ -36,9 +42,12 @@
     }
   },
   "variables": {
+    "azureFileShareName": "friskbotshare",
+    "azureFileStorageAccName": "friskbotstorage",
     "containerGroupName": "friskbotContainerGroup",
     "friskBotName": "friskbot-cli",
-    "friskBotImageName": "vikekh/friskbot-cli"
+    "friskBotImageName": "vikekh/friskbot-cli",
+    "friskBotMountPath": "/data"
   },
   "resources": [
     {
@@ -71,12 +80,28 @@
                   "cpu": "1",
                   "memoryInGb": "1.5"
                 }
-              }
+              },
+              "volumeMounts": [
+                {
+                  "name": "friskbotvolume",
+                  "mountPath": "[variables('friskBotMountPath')]"
+                }
+              ]
             }
           }
         ],
         "restartPolicy": "OnFailure",
-        "osType": "Linux"
+        "osType": "Linux",
+        "volumes": [
+          {
+            "name": "friskbotvolume",
+            "azureFile": {
+                "shareName": "[variables('azureFileShareName')]",
+                "storageAccountName": "[variables('azureFileStorageAccName')]",
+                "storageAccountKey": "[parameters('azureStorageAccountKey')]"
+            }
+          }
+        ]
       }
     }
   ]
