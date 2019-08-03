@@ -64,15 +64,15 @@
               "environmentVariables": [
                 {
                   "name": "AZURE_COMPUTER_VISION_API_KEY",
-                  "value": "[parameters('azureComputerVisionApiKey')]"
+                  "secureValue": "[parameters('azureComputerVisionApiKey')]"
                 },
                 {
                   "name": "AZURE_LUIS_API_KEY",
-                  "value": "[parameters('azureLuisApiKey')]"
+                  "secureValue": "[parameters('azureLuisApiKey')]"
                 },
                 {
                   "name": "DISCORD_BOT_TOKEN",
-                  "value": "[parameters('discordBotToken')]"
+                  "secureValue": "[parameters('discordBotToken')]"
                 }
               ],
               "resources": {
