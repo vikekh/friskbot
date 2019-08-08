@@ -121,8 +121,7 @@ namespace FriskBot.Cli
                 sortedEdits.Add(history[arg2.Id]);
 
                 
-		//await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
-		await arg2.Channel.SendMessageAsync("Jag orkar inte bry mig längre om edits...");
+		        await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
                 history[arg2.Id] = arg2.Content;
             }
         }
