@@ -122,6 +122,7 @@ namespace FriskBot.Cli
 
                 
 		        await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
+
                 history[arg2.Id] = arg2.Content;
             }
         }
@@ -207,7 +208,7 @@ namespace FriskBot.Cli
 
             }
 
-            if (message.Author.Id == 297436465565007872) {
+            if (message.Author.Id == 297436465565007872 && false) {
                 // stolen from https://stackoverflow.com/questions/10576686/c-sharp-regex-pattern-to-extract-urls-from-given-string-not-full-html-urls-but
                 var linkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -230,8 +231,14 @@ namespace FriskBot.Cli
                 }
             }
 
-            if (message.Author.Id == 84706367121657856) {
+            if(message.Content.ToUpper().Contains("BÅT")) {
+                var sentiment = await Services.SentimentService.GetSentiment(message.Content);
 
+                if(sentiment > 0.60) {
+                    await message.Channel.SendMessageAsync("tack :3");
+                } else if(sentiment < 0.44) {
+                    await message.Channel.SendMessageAsync("sluta mobbas");
+                }
             }
 
             if ((message.Content.StartsWith("!exterminatus") || message.Content.StartsWith("!purge")) && message.Channel.Id == 84660308882239488) {

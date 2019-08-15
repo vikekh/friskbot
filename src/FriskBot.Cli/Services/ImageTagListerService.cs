@@ -59,7 +59,6 @@ namespace FriskBot.Cli.Services
         public static async Task<string[]> GetImageTags(string urlis)
         {
             lock(_warlock) {
-
                 if((DateTime.Now - _lastRequest).TotalMilliseconds < 100) {
                     System.Threading.Thread.Sleep(50);
                 }
