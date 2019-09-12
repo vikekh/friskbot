@@ -215,7 +215,7 @@ namespace FriskBot.Cli
                 foreach (Match m in linkParser.Matches(message.Content).Take(1)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(m.Value);
 
-                    if (tags.Any(p => p == "animal" || p == "beer" || p == "food")) {
+                    if (tags.Any(p => p == "person")) {
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
@@ -224,7 +224,7 @@ namespace FriskBot.Cli
                 foreach (string url in message.Attachments.Select(p => p.Url)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(url);
 
-                    if (tags.Any(p => p == "animal" || p == "beer" || p == "food")) {
+                    if (tags.Any(p => p == "person")) {
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
