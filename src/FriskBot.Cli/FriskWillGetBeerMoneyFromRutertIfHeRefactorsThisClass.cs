@@ -119,10 +119,7 @@ namespace FriskBot.Cli
         {
             if (arg2.EditedTimestamp != null) {
                 sortedEdits.Add(history[arg2.Id]);
-
-                
-		        await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
-
+		       // await arg2.Channel.SendMessageAsync("revisionism!! (han skrev egentligen " + history[arg2.Id] + ")");
                 history[arg2.Id] = arg2.Content;
             }
         }
@@ -224,7 +221,7 @@ namespace FriskBot.Cli
                 foreach (string url in message.Attachments.Select(p => p.Url)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(url);
 
-                    if (tags.Any(p => p == "person")) {
+                    if (tags.Any(p => p.ToUpper() == "PERSON" || p.ToUpper() == "MAN")) {
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
@@ -234,9 +231,9 @@ namespace FriskBot.Cli
             if(message.Content.ToUpper().Contains("BÅT")) {
                 var sentiment = await Services.SentimentService.GetSentiment(message.Content);
 
-                if(sentiment > 0.60) {
+                if(sentiment > 0.70) {
                     await message.Channel.SendMessageAsync("tack :3");
-                } else if(sentiment < 0.44) {
+                } else if(sentiment < 0.30) {
                     await message.Channel.SendMessageAsync("sluta mobbas");
                 }
             }

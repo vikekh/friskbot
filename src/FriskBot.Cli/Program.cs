@@ -46,7 +46,7 @@ namespace FriskBot.Cli
                 // We can read from the environment variable to avoid hardcoding.
                 await client.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN"));
                 await client.StartAsync();
-                await client.SetGameAsync("Sekiro 2: Electric Boogaloo");
+                await client.SetGameAsync("Tetris");
 
                 // Here we initialize the logic required to register our commands.
                 await services.GetRequiredService<CommandHandlingService>().InitializeAsync();
