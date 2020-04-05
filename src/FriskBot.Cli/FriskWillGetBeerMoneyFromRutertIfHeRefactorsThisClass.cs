@@ -110,7 +110,8 @@ namespace FriskBot.Cli
         {
             Console.WriteLine($"{_client.CurrentUser} is connected!");
 
-            await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync($"Hello, my name is FriskBot {_version}!");
+            //TODO: Only display message when bot is redeployed
+            //await (_client.GetChannel(Convert.ToUInt64("503278200064049152")) as ISocketMessageChannel).SendMessageAsync($"Hello, my name is FriskBot {_version}!");
 
             //return Task.CompletedTask;
         }
