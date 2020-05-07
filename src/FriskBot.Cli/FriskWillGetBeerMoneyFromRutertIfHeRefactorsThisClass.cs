@@ -222,7 +222,10 @@ namespace FriskBot.Cli
                 foreach (string url in message.Attachments.Select(p => p.Url)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(url);
 
+                    await message.Channel.SendMessageAsync(tags.Aggregate((p,q) => p + "," + q));
+
                     if (tags.Any(p => p.ToUpper() == "PERSON" || p.ToUpper() == "MAN")) {
+
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
                     }
