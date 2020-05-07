@@ -206,7 +206,7 @@ namespace FriskBot.Cli
 
             }
 
-            if (message.Author.Id == 297436465565007872 && false) {
+            if (message.Author.Id == 297436465565007872 ||true) {
                 // stolen from https://stackoverflow.com/questions/10576686/c-sharp-regex-pattern-to-extract-urls-from-given-string-not-full-html-urls-but
                 var linkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
