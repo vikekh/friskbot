@@ -287,14 +287,16 @@ namespace FriskBot.Cli
             }
 
             if (message.Content.StartsWith("!uptime")) {
-                await message.Channel.SendMessageAsync("I've been alive for " + (DateTime.UtcNow - _started).TotalHours);
+                await message.Channel.SendMessageAsync("I've been alive for " + (DateTime.Now - _started).TotalHours.ToString("#.##") + " hours");
             }
 
             if (message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "KATTEN+MUSEN") {
                 await message.Channel.SendMessageAsync("tiotusen");
+            } else if(message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "STÅL") {
+                await message.Channel.SendMessageAsync("venne, inte implementerat än");
             } else if (message.Content.StartsWith("!calc")) {
                 try {
-                    SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5));
+                    SuperHappyScript.SuperHappyScript shs = new SuperHappyScript.SuperHappyScript(message.Content.Substring(5).Replace("kotlett", "1").Replace("kottvå", "2").Replace("kottre", "3"));
                     var bla = new Dictionary<string, double>();
 
                     await message.Channel.SendMessageAsync(shs.Eval(bla).ToString());
