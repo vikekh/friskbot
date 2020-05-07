@@ -213,6 +213,8 @@ namespace FriskBot.Cli
                 foreach (Match m in linkParser.Matches(message.Content).Take(1)) {
                     var tags = await Services.ImageTagListerService.GetImageTags(m.Value);
 
+                    await message.Channel.SendMessageAsync(tags.Aggregate((p, q) => p + "," + q));
+
                     if (tags.Any(p => p == "person")) {
                         await message.Channel.SendMessageAsync("sluta stål");
                         await message.DeleteAsync();
