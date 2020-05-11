@@ -293,6 +293,8 @@ namespace FriskBot.Cli
 
             if (message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "KATTEN+MUSEN") {
                 await message.Channel.SendMessageAsync("tiotusen");
+            } else if(message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "LÄNGDPÅVIKTORSVADERIM") {
+                await message.Channel.SendMessageAsync("0.5");
             } else if(message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "STÅL") {
                 await message.Channel.SendMessageAsync("venne, inte implementerat än");
             } else if (message.Content.StartsWith("!calc")) {
