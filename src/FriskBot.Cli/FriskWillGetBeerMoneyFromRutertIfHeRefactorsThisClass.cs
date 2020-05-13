@@ -291,6 +291,21 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync("I've been alive for " + (DateTime.Now - _started).TotalHours.ToString("#.##") + " hours");
             }
 
+            if (message.Content.StartsWith("!tupptid")) {
+                DateTime now = DateTime.Now;
+                TimeSpan toEarly = new TimeSpan(13, 0, 0);
+                TimeSpan toLate = new TimeSpan(18, 0, 0);
+
+                if (now.TimeOfDay > toEarly && now.TimeOfDay < toLate) {
+                    await message.Channel.SendMessageAsync("Perfekt tid för en tupplur!");
+                }
+                else if (now.TimeOfDay < toEarly) {
+                    await message.Channel.SendMessageAsync("För tidigt, jobba istället din slacker!");
+                } else if (now.TimeOfDay > toLate){
+                    await message.Channel.SendMessageAsync("Nu är det kväll, ingen tupplur då!");
+                }
+            }
+
             if (message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "KATTEN+MUSEN") {
                 await message.Channel.SendMessageAsync("tiotusen");
             } else if(message.Content.StartsWith("!calc") && message.Content.Substring(5).Replace(" ", "").ToUpper() == "LÄNGDPÅVIKTORSVADERIM") {
