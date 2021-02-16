@@ -203,7 +203,10 @@ namespace FriskBot.Cli
                 } catch (Exception exc) {
                     await message.Channel.SendMessageAsync("du formaterade skiten fel, fråga frisk hur man gör: " + exc.Message);
                 }
+            }
 
+            if(message.Content.StartsWith("!strlen ")) {
+                await message.Channel.SendMessageAsync(message.Content.Substring(8).Length.ToString() + " tecken lång, jävla dålig stil att viktor inte fixade detta");
             }
 
             if (message.Author.Id == 297436465565007872) {
