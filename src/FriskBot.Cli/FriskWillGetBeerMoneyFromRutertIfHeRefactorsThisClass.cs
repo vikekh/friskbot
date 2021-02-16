@@ -209,6 +209,10 @@ namespace FriskBot.Cli
                 await message.Channel.SendMessageAsync(message.Content.Substring(8).Length.ToString() + " tecken lång, jävla dålig stil att viktor inte fixade detta");
             }
 
+            if (message.Content.StartsWith("!strlen2 ")) {
+                await message.Channel.SendMessageAsync(System.Text.Encoding.UTF8.GetBytes(message.Content.Substring(9)).Length.ToString() + ", " + Convert.ToString(System.Text.Encoding.UTF8.GetBytes(message.Content.Substring(9)).Length, 16) + " tecken lång, jävla dålig stil att viktor inte fixade detta");
+            }
+
             if (message.Author.Id == 297436465565007872) {
                 // stolen from https://stackoverflow.com/questions/10576686/c-sharp-regex-pattern-to-extract-urls-from-given-string-not-full-html-urls-but
                 var linkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
